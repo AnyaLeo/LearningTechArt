@@ -4,7 +4,7 @@ This README will document my learning process with all things technical art: sha
 
 **Using:** Unity 2020
 
-## First steps: tutorial time
+## First Steps: Shaders
 Results of following Catlike Coding's rendering tutorial series - https://catlikecoding.com/unity/tutorials/rendering/
 
 ### 2 - Textured With Detail
