@@ -4,6 +4,13 @@ This README will document my learning process with all things technical art: sha
 
 **Using:** Unity 2020
 
-## Writing my first shader
+## First steps: tutorial time
+Results of following Catlike Coding's rendering tutorial series - https://catlikecoding.com/unity/tutorials/rendering/
 
-I am following Catlike Coding's rendering tutorial to familiarize myself with shaders - https://catlikecoding.com/unity/tutorials/rendering/part-2/ 
+### 2 - Textured With Detail
+- Learned how to create detailed, high resolution textures while only using 512x512px sized textures
+- Created a marble texture that uses 1 512x512px marble texture and 512x512px marble detail texture to simulate details on the marble up close
+
+### 1 - First Shader
+- Familiarized myself with how to write shader code in ShaderLab
+- Learned about shaders core concepts like shaders, fragment program, vertex program, textures, tiling, offsets
