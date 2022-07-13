@@ -11,7 +11,7 @@ Shader "Custom/TVShader"
         _AmbientColor("Ambient Color", Color) = (0.4, 0.4, 0.4, 1)
         _SpecularColor("Specular Color", Color) = (0.9, 0.9, 0.9, 1)
         _Glossiness("Glossiness", Float) = 42
-        _Tiling("Tiling", Range(1,100)) = 10
+        _Tiling("Tiling", Range(1,200)) = 10
     }
 
     SubShader {
@@ -42,6 +42,7 @@ Shader "Custom/TVShader"
                 float4 position : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float3 worldNormal : NORMAL;
+
                 float3 viewDir : TEXCOORD1;
             };
 
@@ -61,6 +62,8 @@ Shader "Custom/TVShader"
 
                 i.worldNormal = UnityObjectToWorldNormal(v.normal);
 
+                i.viewDir = WorldSpaceViewDir(v.position);
+
                 return i;
             }
 
@@ -73,11 +76,22 @@ Shader "Custom/TVShader"
                 float lightIntensity = smoothstep(0, 0.01, NdotL); // smooth out the transition between light and dark
                 float4 light = lightIntensity * _LightColor0;
 
+                /* Specular reflection */
+                float3 viewDir = normalize(i.viewDir);
+                
+                float3 halfVector = normalize(_WorldSpaceLightPos0 + viewDir);
+                float NdotH = dot(normal, halfVector);
+
+                float specularIntensity = pow(NdotH * lightIntensity, _Glossiness * _Glossiness);
+
+                float specularIntensitySmooth = smoothstep(0.005, 0.01, specularIntensity);
+                float4 specular = specularIntensitySmooth * _SpecularColor;
+
                 /* Stripe shader */
                 float pos = i.uv.y * _Tiling;
                 fixed stripe = floor(frac(pos) + 0.5);
 
-                return lerp(_Color1, _Color2, stripe) * (_AmbientColor + lightIntensity);
+                return lerp(_Color1, _Color2, stripe) * (/*_AmbientColor +*/ lightIntensity + specular);
             }
 
             ENDCG
